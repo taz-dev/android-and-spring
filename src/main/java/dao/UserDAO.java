@@ -8,7 +8,7 @@ public class UserDAO {
 
 	SqlSession sqlSession;
 	public void setSqlSession(SqlSession sqlSession) {
-		this.sqlSession = sqlSession;
+		this.sqlSession = sqlSession; 
 	}
 	
 	public String register(UserVO vo) {
