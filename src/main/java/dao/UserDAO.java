@@ -13,7 +13,7 @@ public class UserDAO {
 	
 	public String register(UserVO vo) {
 
-		try {
+		try { 
 			//회원가입이 되었을 때 success라는 값을 돌려줌
 			sqlSession.insert("u.insert_user", vo);
 			return "{res:[{'result':'success'}]}";
