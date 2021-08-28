@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper : 데이터베이스 접근 및 결과를 반환받는 속성파일 -->
+<mapper namespace="u">
+	<insert id="insert_user" parameterType="vo.UserVO">
+		insert into TEST_USER values(
+			seq_tuser_idx.nextval,
+			#{id},
+			#{pwd}
+		)
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
