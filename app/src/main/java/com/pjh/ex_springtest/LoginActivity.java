@@ -20,29 +20,43 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class RegisterActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     EditText edit_id, edit_pwd;
-    Button btn_regi;
+    Button btn_login, btn_regi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_login);
 
         edit_id = findViewById(R.id.edit_id);
         edit_pwd = findViewById(R.id.edit_pwd);
+        btn_login = findViewById(R.id.btn_login);
         btn_regi = findViewById(R.id.btn_regi);
-
+        
+        //회원가입버튼 클릭했을 때
         btn_regi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //회원가입 페이지로 전환
+                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        //로그인을 위한 이벤트 감지자
+        btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String id = edit_id.getText().toString();
                 String pwd = edit_pwd.getText().toString();
-                String result = "id="+id+"&pwd="+pwd; //서버로 전달하기 위한 파라미터
 
-                new Task().execute(result);
+                String result = "id="+id+"&pwd="+pwd;
+
+                new LoginTask().execute(result);
 
             }
         });
@@ -50,11 +64,11 @@ public class RegisterActivity extends AppCompatActivity {
     }//onCreate()
 
     //서버통신용 Async클래스
-    class Task extends AsyncTask<String, Void, String>{
+    class LoginTask extends AsyncTask<String, Void, String> {
 
         public String ip = "172.30.1.254"; //내 pc 기본 게이트웨이
         String sendMsg, receiveMsg;
-        String serverip = "http://"+ip+":9090/and/regi.do"; //spring으로 연결할 주소
+        String serverip = "http://"+ip+":9090/and/login.do"; //spring으로 연결할 주소
 
         @Override
         protected String doInBackground(String... strings) {
@@ -85,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), "UTF-8");
                     BufferedReader reader = new BufferedReader(tmp);
-                    
+
                     //서버에서 넘겨준 JSON형식의 데이터를 받는다
                     //{res:[{'result':'success'}]}
                     receiveMsg = reader.readLine();
@@ -101,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                     str = jObject.optString("result");
 
                 }
-                
+
             }catch (Exception e){
 
             }
@@ -113,15 +127,15 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
 
             if( s.equalsIgnoreCase("success") ){
-                Toast.makeText(RegisterActivity.this, "Register Success!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginActivity.this, "Login Success!", Toast.LENGTH_SHORT).show();
 
-                //가입성공시 로그인 페이지로 전환
-                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                //로그인 성공시 메인페이지로 전환
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
                 finish();
 
             }else{
-                Toast.makeText(RegisterActivity.this, "Duplicate ID", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Invalid ID or password", Toast.LENGTH_SHORT).show();
             }
 
         }
