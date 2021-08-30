@@ -7,11 +7,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="u">
 	<insert id="insert_user" parameterType="vo.UserVO">
 		insert into TEST_USER values(
-			seq_tuser_idx.nextval,
-			#{id},
-			#{pwd}
-		)
+			seq_tuser_idx.nextval, #{id}, #{pwd} )
 	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login_user" parameterType="vo.UserVO" resultType="vo.UserVO">
+		select * from TEST_USER where id=#{id} and pwd=#{pwd}
+	</select>
 </mapper>
 
 

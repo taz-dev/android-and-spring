@@ -24,6 +24,18 @@ public class UserDAO {
 		}
 		
 	}//register()
+
+	public String login(UserVO vo) {
+	
+		UserVO user = sqlSession.selectOne("u.login_user", vo);
+		
+		if( user == null ) {
+			return "{res:[{'result':'fail'}]}";
+		}else{
+			return "{res:[{'result':'success'}]}";
+		}
+		
+	}//login()
 	
 	
 	

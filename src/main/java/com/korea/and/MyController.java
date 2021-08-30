@@ -26,4 +26,10 @@ public class MyController {
 		return userDao.register(vo);
 	}
 	
+	@RequestMapping("/login.do")
+	@ResponseBody
+	public String login( UserVO vo ) {
+		return userDao.login(vo);
+	}
+	
 }
